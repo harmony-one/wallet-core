@@ -13,24 +13,45 @@ namespace TW::Harmony {
 
 // YZ: the transaction formats OK as long as getting back the same values
 // TBD
+    
 class Transaction {
   public:
     uint256_t nonce;
     uint256_t gasPrice;
     uint256_t gasLimit;
+    
+    uint256_t shardID;
+    uint256_t toShardID;
+    
     Address to;
     uint256_t amount;
     std::vector<uint8_t> payload;
 
+    /* from harmony/core/type/transaction_signing.go
+     tx.data.AccountNonce,
+     tx.data.Price,
+     tx.data.GasLimit,
+     tx.data.ShardID,
+     tx.data.ToShardID,
+     tx.data.Recipient,
+     tx.data.Amount,
+     tx.data.Payload,
+     */
+    
+//??shardID: 0,
+//??toShardID: 0
+    
     // Signature values
     uint256_t v = uint256_t();
     uint256_t r = uint256_t();
     uint256_t s = uint256_t();
 
-    Transaction(uint256_t nonce, uint256_t gasPrice, uint256_t gasLimit, Address to, uint256_t amount, Data payload)
+    Transaction(uint256_t nonce, uint256_t gasPrice, uint256_t gasLimit, uint256_t shardID, uint256_t toShardID, Address to, uint256_t amount, Data payload)
         : nonce(std::move(nonce))
         , gasPrice(std::move(gasPrice))
         , gasLimit(std::move(gasLimit))
+        , shardID(std::move(shardID))
+        , toShardID(std::move(toShardID))
         , to(std::move(to))
         , amount(std::move(amount))
         , payload(std::move(payload)){}

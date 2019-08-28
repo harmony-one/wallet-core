@@ -4,6 +4,7 @@
 // terms governing use, modification, and redistribution, is contained in the
 // file LICENSE at the root of the source code distribution tree.
 
+
 #include "Address.h"
 #include "AddressChecksum.h"
 #include "../Hash.h"
@@ -14,31 +15,43 @@
 using namespace TW::Harmony;
 
 // Harmony uses the address length as that of Ethereum
-/*bool Address::isValid(const std::string& string) {
-    if (string.size() != 42 || string[0] != '0' || string[1] != 'x') {
+ bool Address::isValid(const std::string& string) {
+    /*if (string.size() != 42 || string[0] != '0' || string[1] != 'x') {
         return false;
     }
     const auto data = parse_hex(string);
-    return Address::isValid(data);
-}*/
-
- // TBV
- bool Address::isValid(const std::string& addr) {
-    auto dec = Bech32::decode(addr);
-    if (dec.second.empty()) {
-       return false;
+    if (!Address::isValid(data))
+        return false;
+    // check Bech32 and checksum
+    // std::string addr = string.substr(2); //without 0x
+    */
+     auto dec = Bech32::decode(string);
+     if (dec.second.empty()) {
+         return false;   //checksum is done here
+     }
+     if (dec.first != "one") {
+         return false;
      }
      
-    Data conv;
-    auto success =
-    Bech32::convertBits<5, 8, false>(conv, Data(dec.second.begin(), dec.second.end()));
-    if (!success || conv.size() < 2 || conv.size() > 40) {
+     // Why Harmony address OK?
+     // ??each byte from 5th to 8th bits
+     // check??? from ioTex
+     Data keyHash;
+     auto success = Bech32::convertBits<5, 8, false>(keyHash, dec.second);
+     if (!success || keyHash.size() != 20) {
+         return false;
+     }
+     // check size?
+     Data conv;
+     auto success2 =
+     Bech32::convertBits<5, 8, false>(conv, Data(dec.second.begin(), dec.second.end()));
+     if (!success2 || conv.size() < 2 || conv.size() > 40) {
          return false;
      }
      return true;
  }
- // TBV
 
+// TBV
 Address::Address(const std::string& string) {
     if (!isValid(string)) {
         throw std::invalid_argument("Invalid address data");
@@ -62,11 +75,9 @@ Address::Address(const PublicKey& publicKey) {
     
     // YZ: For Harmony Address, Bech32 is used to encode Ethereum Address which is a keccak256 hash
     // TBD: encoding to Bech32
-    /*
+    //
     
-     
-     
-     */
+    //
     
     std::copy(data.end() - Address::size, data.end(), bytes.begin());
 }
@@ -74,3 +85,4 @@ Address::Address(const PublicKey& publicKey) {
 std::string Address::string() const {
     return checksumed(*this, ChecksumType::eip55);
 }
+

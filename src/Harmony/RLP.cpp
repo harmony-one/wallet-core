@@ -38,6 +38,10 @@ Data RLP::encode(const Transaction& transaction) noexcept {
     append(encoded, encode(transaction.nonce));
     append(encoded, encode(transaction.gasPrice));
     append(encoded, encode(transaction.gasLimit));
+    
+    append(encoded, encode(transaction.shardID));
+    append(encoded, encode(transaction.toShardID));
+    
     append(encoded, encode(transaction.to.bytes));
     append(encoded, encode(transaction.amount));
     append(encoded, encode(transaction.payload));

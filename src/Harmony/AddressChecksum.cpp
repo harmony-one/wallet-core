@@ -4,6 +4,7 @@
 // terms governing use, modification, and redistribution, is contained in the
 // file LICENSE at the root of the source code distribution tree.
 
+
 #include "AddressChecksum.h"
 
 #include "../Hash.h"
@@ -20,8 +21,7 @@ std::string Harmony::checksumed(const Address& address, enum ChecksumType type) 
     const auto hash = hex(Hash::keccak256(addressString));
     
     std::string string = "0x";
-    
-    /*
+ 
     for (auto i = 0; i < std::min(addressString.size(), hash.size()); i += 1) {
         const auto a = addressString[i];
         const auto h = hash[i];
@@ -46,7 +46,7 @@ std::string Harmony::checksumed(const Address& address, enum ChecksumType type) 
                 break;
             }
         }
-    }*/
-
+    }
     return string;
 }
+

@@ -9,6 +9,7 @@
 using namespace TW;
 using namespace TW::Harmony; // YZ
 
+// YZ: chainID = 0, or 1 for Ethereum's hard fork
 std::tuple<uint256_t, uint256_t, uint256_t> Signer::values(const uint256_t& chainID,
                                                            const Data& signature) noexcept {
     boost::multiprecision::uint256_t r, s, v;  // YZ: same as uint256_t
@@ -34,13 +35,16 @@ Signer::sign(const uint256_t& chainID, const PrivateKey& privateKey, const Data&
 }
 
 // YZ: reuse TW::Ethereum::Proto => Ethereum::Proto
-Ethereum::Proto::SigningOutput Signer::sign(const Ethereum::Proto::SigningInput &input) const noexcept {
+//Ethereum
+Harmony::Proto::SigningOutput Signer::sign(const Harmony::Proto::SigningInput &input) const noexcept {
     auto key = PrivateKey(Data(input.private_key().begin(), input.private_key().end()));
 
     auto transaction = Transaction(
             /* nonce: */ load(input.nonce()),
             /* gasPrice: */ load(input.gas_price()),
             /* gasLimit: */ load(input.gas_limit()),
+                            load(input.shard_id()),
+                            load(input.to_shard_id()),
             /* to: */ Address(input.to_address()),
             /* amount: */ load(input.amount()),
             /* payload: */ Data(input.payload().begin(), input.payload().end())
@@ -48,7 +52,8 @@ Ethereum::Proto::SigningOutput Signer::sign(const Ethereum::Proto::SigningInput 
 
     sign(key, transaction);
 
-    auto protoOutput = Ethereum::Proto::SigningOutput();
+    auto protoOutput = //Ethereum
+    Harmony::Proto::SigningOutput();
 
     auto encoded = RLP::encode(transaction);
     protoOutput.set_encoded(encoded.data(), encoded.size());
@@ -79,6 +84,10 @@ Data Signer::hash(const Transaction& transaction) const noexcept {
     append(encoded, RLP::encode(transaction.nonce));
     append(encoded, RLP::encode(transaction.gasPrice));
     append(encoded, RLP::encode(transaction.gasLimit));
+    
+    append(encoded, RLP::encode(transaction.shardID));
+    append(encoded, RLP::encode(transaction.toShardID));
+    
     append(encoded, RLP::encode(transaction.to.bytes));
     append(encoded, RLP::encode(transaction.amount));
     append(encoded, RLP::encode(transaction.payload));

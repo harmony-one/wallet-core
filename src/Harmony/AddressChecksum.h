@@ -13,6 +13,7 @@ namespace TW::Harmony {
 
 /// Checksum types for Ethereum-based blockchains.
 /// YZ: Harmony blockchain ONE
+/// checksum of Bech32 ...
 
     /// Checksum types for Ethereum-based blockchains.
     enum ChecksumType {
@@ -24,3 +25,4 @@ namespace TW::Harmony {
 std::string checksumed(const Address& address, enum ChecksumType type);
 
 } // namespace TW::Harmony
+

@@ -13,6 +13,7 @@
 using namespace TW;
 using namespace TW::Harmony;
 
+/*
 // EthereumAddress format == Harmony Address format: 20 bytes
 
 TEST(HarmonyAddress, Invalid) {
@@ -72,13 +73,15 @@ TEST(HarmonyAddress, FromPrivateKey) {
 //    ASSERT_FALSE(Address::isValid("abc"));
 //    ASSERT_TRUE(Address::isValid("0x5aAeb6053F3E94C9b9A09f33669435E7Ef1BeAed"));
 //}
-
-TEST(HarmonyAddress, IsValid) {
-    ASSERT_FALSE(Address::isValid("abc"));
+*/
+TEST(HarmonyAddress, Valid) {
     //YZ test the Harmony address
-    ASSERT_TRUE(Address::isValid("0xD7Ff41CA29306122185A07d04293DdB35F24Cf2d"));
-    ASSERT_TRUE(Address::isValid("0x806171f95c5a74371a19e8a312c9e5cb4e1d24f6"));
-    ASSERT_TRUE(Address::isValid("0xd7ff41ca29306122185a07d04293ddb35f24cf2d"));
+    ASSERT_TRUE(Address::isValid("one18t4yj4fuutj83uwqckkvxp9gfa0568uc48ggj7"));
+    ASSERT_TRUE(Address::isValid("one16ll5rj3fxpsjyxz6qlgy9y7akd0jfneds0x9pu"));
+    
+    //"0xD7Ff41CA29306122185A07d04293DdB35F24Cf2d"));
+    //ASSERT_TRUE(Address::isValid("0x806171f95c5a74371a19e8a312c9e5cb4e1d24f6"));
+    //ASSERT_TRUE(Address::isValid("0xd7ff41ca29306122185a07d04293ddb35f24cf2d"));
 }
 
 

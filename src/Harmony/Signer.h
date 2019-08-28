@@ -12,7 +12,7 @@
 #include "../Hash.h"
 #include "../PrivateKey.h"
 #include "../uint256.h"
-#include "../proto/Ethereum.pb.h"
+#include "../proto/Harmony.pb.h"
 
 #include <boost/multiprecision/cpp_int.hpp>
 #include <cstdint>
@@ -20,11 +20,11 @@
 #include <vector>
 
 // YZ
-// Proto is Ethereum::Proto
+// Proto is Harmony::Proto
 
 namespace TW::Harmony {
 
-/// Helper class that performs Ethereum transaction signing.
+/// Helper class that performs Harmony transaction signing.
 class Signer {
   public:
     uint256_t chainID;
@@ -32,8 +32,8 @@ class Signer {
     /// Initializes a signer with a chain identifier.
     explicit Signer(uint256_t chainID) : chainID(std::move(chainID)) {}
 
-    /// Signs a Ethereum::Proto::SigningInput transaction
-    Ethereum::Proto::SigningOutput sign(const Ethereum::Proto::SigningInput& input) const noexcept;
+    /// Signs a Harmony::Proto::SigningInput transaction
+    Harmony::Proto::SigningOutput sign(const Harmony::Proto::SigningInput& input) const noexcept;
 
     /// Signs the given transaction.
     void sign(const PrivateKey& privateKey, Transaction& transaction) const noexcept;
